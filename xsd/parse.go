@@ -140,6 +140,10 @@ func Parse(docs ...[]byte) ([]Schema, error) {
 	for _, root := range schema {
 		tns := root.Attr("", "targetNamespace")
 		s := Schema{TargetNS: tns, Types: make(map[xml.Name]Type)}
+		if ss, has := parsed[tns]; has {
+			s = ss
+		}
+
 		if err := s.parse(root); err != nil {
 			return nil, err
 		}
